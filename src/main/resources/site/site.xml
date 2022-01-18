@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+  <form>
+    <input name="fathomSiteKey" type="TextLine">
+      <label>Fathom site key</label>
+      <occurrences minimum="1" maximum="1"/>
+    </input>
+
+    <input name="spa" type="ComboBox">
+      <label>Tracking type – SPA modes</label>
+      <help-text>If your page is a Single Page application, you can choose to track history or hash routing.</help-text>
+      <occurrences minimum="1" maximum="1"/>
+      <config>
+        <option value="auto">Normal (auto)</option>
+        <option value="history">HTML5 History API (history)</option>
+        <option value="hash">Track hash changes (hash)</option>
+      </config>
+      <default>auto</default>
+    </input>
+
+    <input  name="honorDnt" type="CheckBox">
+      <label>Honor Do Not Track</label>
+      <help-text>By default we track every visitor to your website, regardless of them having DNT turned on or not.</help-text>
+    </input>
+
+    <input  name="ignoreCanonical" type="CheckBox">
+      <label>Ignore canonicals</label>
+      <help-text>If there’s a canonical URL in place, then by default we use it instead of the current URL.</help-text>
+    </input>
+  </form>
+
+  <processors>
+    <response-processor name="fathom-analytics" order="10"/>
+  </processors>
+</site>
