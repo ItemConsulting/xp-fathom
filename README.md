@@ -6,7 +6,7 @@ Fathom also let you remove the cookie banner on your page, since [it doesn't use
 
 [![](https://jitpack.io/v/no.item/xp-fathom.svg)](https://jitpack.io/#no.item/xp-fathom)
 
-<img src="https://github.com/ItemConsulting/xp-fathom/raw/main/docs/fathom-logo-small-blackbg.svg?sanitize=true" width="150">
+<img src="https://github.com/ItemConsulting/xp-fathom/raw/main/docs/fathom-logo-small-whitebg.svg?sanitize=true" width="150">
 
 ## Installation
 
