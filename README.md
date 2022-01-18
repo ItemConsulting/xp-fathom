@@ -2,6 +2,8 @@
 
 Enonic XP Application for adding [Fathom Analytics](https://usefathom.com/ref/SVGDJS) tracking script to your website.
 
+Fathom also let you remove the cookie banner on your page, since [it doesn't use cookies](https://usefathom.com/blog/anonymization).
+
 [![](https://jitpack.io/v/no.item/xp-fathom.svg)](https://jitpack.io/#no.item/xp-fathom)
 
 <img src="https://github.com/ItemConsulting/xp-fathom/raw/main/docs/fathom-logo-small-blackbg.svg?sanitize=true" width="150">
@@ -9,6 +11,9 @@ Enonic XP Application for adding [Fathom Analytics](https://usefathom.com/ref/SV
 ## Installation
 
 Download this application from Jitpack, and install the jar.
+
+| :information_source: Remember to add Fathom domains to your CORS configuration |
+|--------------------------------------------------------------------------------|
 
 ## Usage
 
