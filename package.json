@@ -1,0 +1,46 @@
+{
+  "name": "xp-fathom",
+  "version": "1.0.0",
+  "description": "Fathom for XP",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build:client": "webpack --config webpack.client.config.js --color",
+    "build:server": "webpack --config webpack.server.config.js --color",
+    "build": "run-p -c build:*",
+    "dist:client": "cross-env NODE_ENV=production webpack --config webpack.client.config.js --color",
+    "dist:server": "cross-env NODE_ENV=production webpack --config webpack.server.config.js --color --hide-modules",
+    "dist": "run-p -c dist:*",
+    "lint": "eslint --fix 'src/**/*.ts'"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.16.7",
+    "@babel/plugin-proposal-class-properties": "^7.16.7",
+    "@babel/preset-env": "^7.16.7",
+    "@babel/register": "^7.16.7",
+    "@typescript-eslint/eslint-plugin": "^5.8.0",
+    "@typescript-eslint/parser": "^5.8.0",
+    "babel-loader": "^8.2.3",
+    "browserslist-config-enonic": "^1.0.6",
+    "cross-env": "^7.0.3",
+    "enonic-types": "^0.3.12",
+    "eslint": "^8.5.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "file-loader": "^6.2.0",
+    "glob": "^7.2.0",
+    "prettier": "^2.5.1",
+    "ramda": "^0.28.0",
+    "ts-loader": "^9.2.6",
+    "typescript": "^4.5.4",
+    "webpack": "^5.66.0",
+    "webpack-cli": "^4.9.1"
+  },
+  "browserslist": [
+    "extends browserslist-config-enonic"
+  ],
+  "engines": {
+    "node": ">= 16.0.0",
+    "npm": ">= 7.10.0"
+  }
+}
