@@ -41,7 +41,7 @@ enonic project build
 Deploy locally for testing purposes:
 
 ```bash
-./gradlew publishToMavenLocal
+enonic project deploy
 ```
 
 ## Deploy to Jitpack
