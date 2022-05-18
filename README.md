@@ -25,6 +25,7 @@ When you add the Fathom application to your *site*, you can to configure these f
  2. [Tracking type – SPA modes](https://usefathom.com/docs/script/script-advanced#spa)
  3. [Honor Do Not Track](https://usefathom.com/docs/script/script-advanced#dnt)
  4. [Ignore canonicals](https://usefathom.com/docs/script/script-advanced#canonicals)
+ 5. Automatically add script to page – (uncheck to not automatically add the script to your page. Useful for headless)
 
 ## Deploying
 

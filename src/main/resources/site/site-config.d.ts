@@ -19,4 +19,9 @@ export interface SiteConfig {
    * Ignore canonicals
    */
   ignoreCanonical: boolean;
+
+  /**
+   * Automatically add script to page
+   */
+  automaticallyAddToPage: boolean;
 }

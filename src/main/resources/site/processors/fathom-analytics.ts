@@ -10,8 +10,9 @@ export function responseProcessor(
   res: XP.Response
 ): XP.Response {
   const siteConfig = getCurrentSiteConfig();
+  const automaticallyAddToPage = siteConfig.automaticallyAddToPage ?? true;
 
-  if (req.mode !== "live" && !siteConfig) {
+  if (req.mode !== "live" || !automaticallyAddToPage) {
     return res;
   }
 
@@ -22,7 +23,7 @@ export function responseProcessor(
   // Pre connect to fathom cdn
   res.pageContributions.headBegin = forceArray(
     res.pageContributions.headBegin
-  ).concat(`<link rel="preconnect" href="${URL_FATHOM_PRECONNECT}">`)
+  ).concat(`<link rel="preconnect" href="${URL_FATHOM_PRECONNECT}">`);
 
   const attributes = [
     siteConfig.spa !== "auto" ? `data-spa="${siteConfig.spa}"` : undefined,
