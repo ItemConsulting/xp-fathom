@@ -10,10 +10,9 @@ Fathom also let you remove the cookie banner on your page, since [it doesn't use
 
 ## Installation
 
-Download this application from Jitpack, and install the jar.
+This application can be installed from [Enonic Market](https://market.enonic.com/vendors/item-consulting-as/fathom-analytics).
 
-| :information_source: Remember to add Fathom domains to your CORS configuration |
-|--------------------------------------------------------------------------------|
+ > **Warning** Remember to add Fathom domains to your CORS configuration
 
 ## Usage
 
