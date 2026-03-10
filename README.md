@@ -4,7 +4,7 @@ Enonic XP Application for adding [Fathom Analytics](https://usefathom.com/ref/SV
 
 Fathom also let you remove the cookie banner on your page, since [it doesn't use cookies](https://usefathom.com/blog/anonymization).
 
-[![](https://jitpack.io/v/no.item/xp-fathom.svg)](https://jitpack.io/#no.item/xp-fathom)
+[![](https://repo.itemtest.no/api/badge/latest/releases/no/item/xp-fathom)](https://repo.itemtest.no/#/releases/no/item/xp-fathom)
 
 <img src="https://github.com/ItemConsulting/xp-fathom/raw/main/docs/fathom-logo-small-whitebg.svg?sanitize=true" width="150">
 
@@ -44,6 +44,8 @@ Deploy locally for testing purposes:
 enonic project deploy
 ```
 
-## Deploy to Jitpack
+## Deploy to Maven
 
-Go to the [Jitpack page for xp-fathom](https://jitpack.io/#no.item/xp-fathom) to deploy from Github.
+```bash
+./gradlew publish -P com.enonic.xp.app.production=true
+```
