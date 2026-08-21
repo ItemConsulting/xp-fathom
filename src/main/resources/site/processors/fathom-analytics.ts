@@ -1,18 +1,18 @@
+import type { Request, Response } from "@enonic-types/core";
 import { getSite } from "/lib/xp/portal";
-import { forceArray } from "../../lib/array";
-import { type SiteConfig } from "../site-config";
 
 const URL_FATHOM_PRECONNECT = "https://cdn.usefathom.com";
 const URL_FATHOM_SCRIPT = "https://cdn.usefathom.com/script.js";
 
-export function responseProcessor(
-  req: XP.Request,
-  res: XP.Response
-): XP.Response {
-  const siteConfig = getCurrentSiteConfig();
-  const automaticallyAddToPage = siteConfig.automaticallyAddToPage ?? true;
+export function responseProcessor(req: Request, res: Response): Response {
+  if (req.mode !== "live") {
+    return res;
+  }
 
-  if (req.mode !== "live" || !automaticallyAddToPage) {
+  const siteConfig = getCurrentSiteConfig();
+  const automaticallyAddToPage = siteConfig?.automaticallyAddToPage ?? true;
+
+  if (!automaticallyAddToPage || !siteConfig?.fathomSiteKey) {
     return res;
   }
 
@@ -21,9 +21,9 @@ export function responseProcessor(
   }
 
   // Pre connect to fathom cdn
-  res.pageContributions.headBegin = forceArray(
-    res.pageContributions.headBegin
-  ).concat(`<link rel="preconnect" href="${URL_FATHOM_PRECONNECT}">`);
+  res.pageContributions.headBegin = forceArray(res.pageContributions.headBegin).concat(
+    `<link rel="preconnect" href="${URL_FATHOM_PRECONNECT}">`,
+  );
 
   const attributes = [
     siteConfig.spa !== "auto" ? `data-spa="${siteConfig.spa}"` : undefined,
@@ -33,21 +33,28 @@ export function responseProcessor(
     .filter((attr) => attr !== undefined)
     .join(" ");
 
-  res.pageContributions.headEnd = forceArray(
-    res.pageContributions.headEnd
-  ).concat(
-    `<script src="${URL_FATHOM_SCRIPT}" data-site="${siteConfig.fathomSiteKey}" ${attributes} defer></script>`
+  res.pageContributions.headEnd = forceArray(res.pageContributions.headEnd).concat(
+    `<script src="${URL_FATHOM_SCRIPT}" data-site="${siteConfig.fathomSiteKey}" ${attributes} defer></script>`,
   );
 
   return res;
 }
 
-function getCurrentSiteConfig(): SiteConfig {
-  const site = getSite<SiteConfig>();
+function getCurrentSiteConfig(): XP.SiteConfig | undefined {
+  const site = getSite<XP.SiteConfig>();
+
+  if (!site) {
+    return undefined;
+  }
 
   const results = forceArray(site.data.siteConfig)
     .filter((siteConfig) => siteConfig.applicationKey === app.name)
     .map((siteConfig) => siteConfig.config);
 
   return results[0];
+}
+
+function forceArray<A>(data: A | A[] | undefined): A[] {
+  data = data ?? [];
+  return Array.isArray(data) ? data : [data];
 }

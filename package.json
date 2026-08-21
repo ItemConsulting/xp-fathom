@@ -1,46 +1,31 @@
 {
   "name": "xp-fathom",
-  "version": "1.0.1",
+  "version": "1.2.0",
   "description": "Fathom for XP",
   "license": "MIT",
   "private": true,
   "scripts": {
-    "build:client": "webpack --config webpack.client.config.js --color",
-    "build:server": "webpack --config webpack.server.config.js --color",
-    "build": "run-p -c build:*",
-    "dist:client": "cross-env NODE_ENV=production webpack --config webpack.client.config.js --color",
-    "dist:server": "cross-env NODE_ENV=production webpack --config webpack.server.config.js --color --hide-modules",
-    "dist": "run-p -c dist:*",
-    "lint": "eslint --fix 'src/**/*.ts'"
+    "build": "node tsup/anyServerFiles.js && npx tsup -d build/resources/main",
+    "check": "node tsup/anyServerFiles.js && npx tsc --noEmit -p src/main/resources/tsconfig.json",
+    "watch": "npm run build -- --watch",
+    "lint": "biome check --write",
+    "release": "npm run build",
+    "versioning": "npx changeset version && npm i --package-lock-only && NEW_VERSION=$(node -p \"require('./package.json').version\") && sed -i \"s/version.*/version = ${NEW_VERSION}/\" gradle.properties"
   },
   "devDependencies": {
-    "@babel/core": "^7.17.12",
-    "@babel/plugin-proposal-class-properties": "^7.17.12",
-    "@babel/preset-env": "^7.17.12",
-    "@babel/register": "^7.17.7",
-    "@typescript-eslint/eslint-plugin": "^5.25.0",
-    "@typescript-eslint/parser": "^5.25.0",
-    "babel-loader": "^8.2.5",
-    "browserslist-config-enonic": "^1.0.6",
-    "cross-env": "^7.0.3",
-    "enonic-types": "^0.4.7",
-    "eslint": "^8.15.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-prettier": "^4.0.0",
-    "file-loader": "^6.2.0",
-    "glob": "^8.0.3",
-    "prettier": "^2.6.2",
-    "ramda": "^0.28.0",
-    "ts-loader": "^9.3.0",
-    "typescript": "^4.6.4",
-    "webpack": "^5.72.1",
-    "webpack-cli": "^4.9.2"
+    "@biomejs/biome": "^2.5.9",
+    "@changesets/cli": "^3.0.1",
+    "@enonic-types/core": "7.16.8",
+    "@enonic-types/global": "^7.16.8",
+    "@enonic-types/lib-portal": "^7.16.8",
+    "@swc/core": "^1.16.1",
+    "@types/node": "^24.13.3",
+    "glob": "^13.0.6",
+    "tsup": "^8.5.1",
+    "typescript": "^7.0.2"
   },
-  "browserslist": [
-    "extends browserslist-config-enonic"
-  ],
-  "engines": {
-    "node": ">= 16.0.0",
-    "npm": ">= 7.10.0"
+  "allowScripts": {
+    "@swc/core": false,
+    "esbuild": false
   }
 }

@@ -1,9 +1,9 @@
 plugins {
-  id 'java'
-  id 'maven-publish'
-  id 'com.github.node-gradle.node' version '2.2.3'
-  id 'com.enonic.xp.app' version '3.1.0'
-  id 'no.item.xp.codegen' version '1.1.9'
+  id "java"
+  id "maven-publish"
+  id "com.github.node-gradle.node" version "7.1.0"
+  id "com.enonic.xp.app" version "3.6.2"
+  id "no.item.xp.codegen" version "2.7.0"
 }
 
 sourceCompatibility = JavaVersion.VERSION_11
@@ -22,73 +22,79 @@ dependencies {
 }
 
 repositories {
-  mavenLocal()
   mavenCentral()
   xp.enonicRepo()
 }
 
 node {
   download = true
-  version = '16.13.1'
+  version = "24.18.0"
 }
 
-task npmInstallForce(type: NpmTask) {
-  description = 'Update all project node dependencies'
-  args = ['install', '--force']
+tasks.withType(Copy).configureEach {
+  includeEmptyDirs = false
 }
 
-task cleanNode(type: org.gradle.api.tasks.Delete) {
-  delete 'node_modules'
+tasks.register("dev", NpmTask) {
+  args = [
+    "run",
+    "watch"
+  ]
+  dependsOn npmInstall, deploy
+  environment = [
+    "FORCE_COLOR": "true",
+  ]
 }
 
-task serverWebpack(type: NodeTask, dependsOn: npmInstall) {
-  environment = ['NODE_ENV': nodeEnvironment()]
-  // args = [ '--config', 'webpack.server.config.babel.js', '--color', '--hide-modules' ]
-  args = ['--config', 'webpack.server.config.js', '--color']
-  description = 'Build server JS.'
-  inputs.dir 'src/main'
-  outputs.dir "${buildDir}/resources/main"
-  script = file('node_modules/webpack-cli/bin/cli.js')
+tasks.register("npmCheck", NpmTask) {
+  dependsOn npmInstall
+  args = [
+    "run",
+    "check"
+  ]
+  environment = [
+    "FORCE_COLOR": "true",
+  ]
 }
+
+// If you ALWAYS want to SKIP `test` and `check` tasks on development build, wrap this inside an "if..."
+// if (!(project.hasProperty("dev") || project.hasProperty("development"))) {
+check.dependsOn npmCheck
+// }
+
+tasks.register("npmBuild", NpmTask) {
+  args = [
+    "run",
+    "--silent",
+    "build"
+  ]
+  // Both tasks write into build/resources/main; make the ordering explicit
+  // so processResources can never interleave with or clobber the tsup output.
+  dependsOn npmInstall, processResources
+  environment = [
+    "FORCE_COLOR": "true",
+    "LOG_LEVEL_FROM_GRADLE": gradle.startParameter.logLevel.toString(),
+    "NODE_ENV": project.hasProperty("dev") || project.hasProperty("development") ? "development" : "production"
+  ]
+  inputs.dir "src/main/resources"
+  outputs.dir "build/resources/main"
+}
+
+jar.dependsOn npmBuild
 
 processResources {
-  include '**/*'
-  exclude '**/.gitkeep'
-  exclude '**/tsconfig.*.json'
-  exclude '**/*.es'
-  exclude '**/*.es6'
-  exclude '**/*.ts'
-  exclude 'assets/js/**/*.js'
-  include 'assets/js/bundle.js'
-  exclude 'assets/styles/**/*.less'
-  exclude 'assets/styles/**/*.sass'
-  exclude 'assets/styles/**/*.scss'
-  includeEmptyDirs false
-}
-
-jar {
-  exclude 'assets/styles/**/*.less'
-  exclude 'assets/styles/**/*.sass'
-  exclude 'assets/styles/**/*.scss'
-  exclude 'assets/styles/**/*.js'
-
-  dependsOn += generateTypeScriptDeclaration
-  dependsOn += serverWebpack
-}
-
-jar.outputs.dir "${buildDir}/resources/main"
-
-def nodeEnvironment() {
-  def environments = [prod: 'production', dev: 'development']
-  def nodeEnv = environments[hasProperty('env') ? env : 'prod']
-  return nodeEnv != null ? nodeEnv : 'production'
+  exclude "**/.gitkeep"
+  exclude "**/*.json"
+  exclude "**/*.ts"
 }
 
 publishing {
   repositories {
     maven {
       name = "itemtestRepository"
-      url = "https://repo.itemtest.no/releases"
+      url = version.endsWith('SNAPSHOT')
+        ? "https://repo.itemtest.no/snapshots"
+        : "https://repo.itemtest.no/releases"
       credentials(PasswordCredentials)
       authentication {
         basic(BasicAuthentication)
