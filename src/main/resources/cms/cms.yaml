@@ -1,0 +1,87 @@
+kind: "CMS"
+form:
+  - type: "TextLine"
+    name: "fathomSiteKey"
+    label:
+      text: "Fathom site key"
+      i18n: "cms.fathomSiteKey"
+    occurrences:
+      min: 1
+      max: 1
+
+  - type: "RadioButton"
+    name: "spa"
+    label:
+      text: "Single Page Application mode"
+      i18n: "cms.spa"
+    helpText:
+      text: "Only needed if the site changes pages without full page loads."
+      i18n: "cms.spa.helpText"
+    occurrences:
+      min: 1
+      max: 1
+    options:
+      - value: "off"
+        label:
+          text: "Off – normal website"
+          i18n: "cms.spa.off"
+      - value: "auto"
+        label:
+          text: "Automatic (HTML5 History API, falling back to hash changes)"
+          i18n: "cms.spa.auto"
+      - value: "history"
+        label:
+          text: "HTML5 History API"
+          i18n: "cms.spa.history"
+      - value: "hash"
+        label:
+          text: "Hash changes"
+          i18n: "cms.spa.hash"
+    default: "off"
+
+  - type: "CheckBox"
+    name: "honorDnt"
+    label:
+      text: "Honor Do Not Track"
+      i18n: "cms.honorDnt"
+    helpText:
+      text: "By default we track every visitor to your website, regardless of them having DNT turned on or not."
+      i18n: "cms.honorDnt.helpText"
+
+  - type: "CheckBox"
+    name: "ignoreCanonical"
+    label:
+      text: "Ignore canonicals"
+      i18n: "cms.ignoreCanonical"
+    helpText:
+      text: "If there’s a canonical URL in place, then by default we use it instead of the current URL."
+      i18n: "cms.ignoreCanonical.helpText"
+
+  - type: "RadioButton"
+    name: "euIsolation"
+    label:
+      text: "EU isolation"
+      i18n: "cms.euIsolation"
+    occurrences:
+      min: 1
+      max: 1
+    options:
+      - value: "extreme"
+        label:
+          text: "Extreme – all visitors are processed in the EU"
+          i18n: "cms.euIsolation.extreme"
+      - value: "standard"
+        label:
+          text: "Standard – visitors from the EU are processed in the EU, all others in the US"
+          i18n: "cms.euIsolation.standard"
+    default: "extreme"
+
+  - type: "CheckBox"
+    name: "automaticallyAddToPage"
+    label:
+      text: "Automatically add script to page"
+      i18n: "cms.automaticallyAddToPage"
+    helpText:
+      text: "Use a response processor to automatically add Fathom JavaScript to the site."
+      i18n: "cms.automaticallyAddToPage.helpText"
+    default: "checked"

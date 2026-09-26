@@ -1,0 +1,4 @@
+kind: "Site"
+processors:
+  - name: "fathom-analytics"
+    order: 10

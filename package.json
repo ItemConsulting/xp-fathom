@@ -4,28 +4,26 @@
   "description": "Fathom for XP",
   "license": "MIT",
   "private": true,
-  "scripts": {
-    "build": "node tsup/anyServerFiles.js && npx tsup -d build/resources/main",
-    "check": "node tsup/anyServerFiles.js && npx tsc --noEmit -p src/main/resources/tsconfig.json",
-    "watch": "npm run build -- --watch",
-    "lint": "biome check --write",
-    "release": "npm run build",
-    "versioning": "npx changeset version && npm i --package-lock-only && NEW_VERSION=$(node -p \"require('./package.json').version\") && sed -i \"s/version.*/version = ${NEW_VERSION}/\" gradle.properties"
-  },
   "devDependencies": {
-    "@biomejs/biome": "^2.5.9",
-    "@changesets/cli": "^3.0.1",
-    "@enonic-types/core": "7.16.8",
-    "@enonic-types/global": "^7.16.8",
-    "@enonic-types/lib-portal": "^7.16.8",
-    "@swc/core": "^1.16.1",
-    "@types/node": "^24.13.3",
-    "glob": "^13.0.6",
-    "tsup": "^8.5.1",
+    "@biomejs/biome": "^2.5.14",
+    "@changesets/cli": "^3.0.3",
+    "@enonic-types/core": "8.1.0-B3",
+    "@enonic-types/global": "8.1.0-B3",
+    "@enonic-types/lib-portal": "8.1.0-B3",
+    "@item-enonic-types/nashorn-env": "^0.0.2",
+    "@swc/core": "^1.16.2",
+    "@types/node": "^24.13.5",
+    "concurrently": "^10.0.5",
+    "tsdown": "^0.23.0",
     "typescript": "^7.0.2"
   },
-  "allowScripts": {
-    "@swc/core": false,
-    "esbuild": false
+  "scripts": {
+    "build": "tsdown",
+    "check": "concurrently -c auto -g --timings npm:check:types npm:lint",
+    "check:types": "tsc --noEmit -p src/main/resources/tsconfig.json",
+    "lint": "biome ci",
+    "lint:fix": "biome check --write",
+    "release": "changeset publish",
+    "versioning": "npx changeset version && npm i --package-lock-only && NEW_VERSION=$(node -p \"require('./package.json').version\") && sed -i -E \"s/^version *=.*/version = ${NEW_VERSION}/\" gradle.properties"
   }
 }

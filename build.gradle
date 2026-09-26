@@ -1,24 +1,12 @@
 plugins {
-  id "java"
   id "maven-publish"
   id "com.github.node-gradle.node" version "7.1.0"
-  id "com.enonic.xp.app" version "3.6.2"
-  id "no.item.xp.codegen" version "2.7.0"
-}
-
-sourceCompatibility = JavaVersion.VERSION_11
-targetCompatibility = JavaVersion.VERSION_11
-
-app {
-  name = "${appName}"
-  displayName = "${appDisplayName}"
-  vendorName = "${vendorName}"
-  vendorUrl = "${vendorUrl}"
-  systemVersion = "${xpVersion}"
+  id "com.enonic.xp.app"
+  id "no.item.xp.codegen" version "3.0.0-SNAPSHOT"
 }
 
 dependencies {
-  include "com.enonic.xp:lib-portal:${xpVersion}"
+  include xplibs.portal
 }
 
 repositories {
@@ -28,26 +16,39 @@ repositories {
 
 node {
   download = true
-  version = "24.18.0"
+  // Single source of truth for the Node version, shared with .github/workflows and nvm
+  version = file(".nvmrc").text.trim()
 }
 
-tasks.withType(Copy).configureEach {
-  includeEmptyDirs = false
+processResources {
+  exclude "**/.gitkeep"
+  exclude "**/*.json"
+  exclude "**/*.ts"
+  exclude "**/*.tsx"
 }
 
-tasks.register("dev", NpmTask) {
+tasks.register("npmBuild", NpmTask) {
   args = [
     "run",
-    "watch"
+    "--silent",
+    "build"
   ]
-  dependsOn npmInstall, deploy
+  dependsOn npmInstall
   environment = [
     "FORCE_COLOR": "true",
+    "LOG_LEVEL_FROM_GRADLE": gradle.startParameter.logLevel.toString(),
+    "NODE_ENV": project.findProperty("env") == "dev" ? "development" : "production"
   ]
+  inputs.dir "src/main/resources"
+  outputs.dir "build/resources/main"
+  outputs.upToDateWhen { false }
 }
 
+jar.dependsOn npmBuild
+
 tasks.register("npmCheck", NpmTask) {
-  dependsOn npmInstall
+  // check:types reads the types generated from the YAML descriptors
+  dependsOn npmInstall, generateTypeScript
   args = [
     "run",
     "check"
@@ -57,35 +58,10 @@ tasks.register("npmCheck", NpmTask) {
   ]
 }
 
-// If you ALWAYS want to SKIP `test` and `check` tasks on development build, wrap this inside an "if..."
-// if (!(project.hasProperty("dev") || project.hasProperty("development"))) {
 check.dependsOn npmCheck
-// }
 
-tasks.register("npmBuild", NpmTask) {
-  args = [
-    "run",
-    "--silent",
-    "build"
-  ]
-  // Both tasks write into build/resources/main; make the ordering explicit
-  // so processResources can never interleave with or clobber the tsup output.
-  dependsOn npmInstall, processResources
-  environment = [
-    "FORCE_COLOR": "true",
-    "LOG_LEVEL_FROM_GRADLE": gradle.startParameter.logLevel.toString(),
-    "NODE_ENV": project.hasProperty("dev") || project.hasProperty("development") ? "development" : "production"
-  ]
-  inputs.dir "src/main/resources"
-  outputs.dir "build/resources/main"
-}
-
-jar.dependsOn npmBuild
-
-processResources {
-  exclude "**/.gitkeep"
-  exclude "**/*.json"
-  exclude "**/*.ts"
+tasks.withType(Copy).configureEach {
+  includeEmptyDirs = false
 }
 
 publishing {
