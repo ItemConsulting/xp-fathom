@@ -10,9 +10,9 @@ declare global {
       fathomSiteKey: string;
 
       /**
-       * Tracking type – SPA modes
+       * Single Page Application mode
        */
-      spa: "auto" | "history" | "hash";
+      spa: "off" | "auto" | "history" | "hash";
 
       /**
        * Honor Do Not Track
@@ -23,6 +23,11 @@ declare global {
        * Ignore canonicals
        */
       ignoreCanonical: boolean;
+
+      /**
+       * EU isolation
+       */
+      euIsolation: "extreme" | "standard";
 
       /**
        * Automatically add script to page

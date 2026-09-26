@@ -1,0 +1,7 @@
+kind: "Application"
+title: "Fathom Analytics"
+description:
+  text: "Use Fathom to track page visits on your site"
+  i18n: "application.description"
+vendorName: "Item Consulting"
+vendorUrl: "https://item.no"
