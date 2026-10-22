@@ -6,7 +6,7 @@
     "useIgnoreFile": true
   },
   "files": {
-    "includes": ["**", "!**/build", "!**/*.svg"]
+    "includes": ["**", "!**/build", "!**/*.svg", "!.changeset/*.md"]
   },
   "formatter": {
     "enabled": true,

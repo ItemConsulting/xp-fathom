@@ -17,16 +17,15 @@ This application can be installed from [Enonic Market](https://market.enonic.com
 
 ### Configuration
 
-When you add the Fathom application to your *site*, you can to configure these fields under site config.
-
- 1. [Fathom site key](https://usefathom.com/docs/script/script) (required)
- 2. [Single Page Application mode](https://usefathom.com/docs/script/script-advanced#spa) – `off` for a normal website, or
-    Fathom's `auto`, `history` or `hash` mode
- 3. [Honor Do Not Track](https://usefathom.com/docs/script/script-advanced#dnt)
- 4. [Ignore canonicals](https://usefathom.com/docs/script/script-advanced#canonicals)
- 5. [EU isolation](https://usefathom.com/docs/script/eu-isolation) – `extreme` (default) processes all visitors in the EU,
-    `standard` only visitors from the EU
- 6. Automatically add script to page – (uncheck to not automatically add the script to your page. Useful for headless)
+When you add the Fathom application to your _site_, you can to configure these fields under site config.
+1. [Fathom site key](https://usefathom.com/docs/script/script) (required)
+2. [Single Page Application mode](https://usefathom.com/docs/script/script-advanced#spa) – `off` for a normal website, or
+   Fathom's `auto`, `history` or `hash` mode
+3. [Honor Do Not Track](https://usefathom.com/docs/script/script-advanced#dnt)
+4. [Ignore canonicals](https://usefathom.com/docs/script/script-advanced#canonicals)
+5. [EU isolation](https://usefathom.com/docs/script/eu-isolation) – `extreme` (default) processes all visitors in the EU,
+   `standard` only visitors from the EU
+6. Automatically add script to page – (uncheck to not automatically add the script to your page. Useful for headless)
 
 ## Development
 
