@@ -68,7 +68,9 @@ publishing {
   repositories {
     maven {
       name = "itemtestRepository"
-      url = version.endsWith('SNAPSHOT')
+      // Only stable versions reach the releases repository: a changesets prerelease (1.0.0-beta.0 on npm) is versioned
+      // 1.0.0-SNAPSHOT here by .changeset/gradle-version.mjs
+      url = version.endsWith("SNAPSHOT")
         ? "https://repo.itemtest.no/snapshots"
         : "https://repo.itemtest.no/releases"
       credentials(PasswordCredentials)
