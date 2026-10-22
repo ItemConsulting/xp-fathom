@@ -1,0 +1,8 @@
+# yaml-language-server: $schema=https://www.schemastore.org/enonic-xp-application-8.0.0.json
+kind: "Application"
+title: "Fathom Analytics"
+description:
+  text: "Use Fathom to track page visits on your site"
+  i18n: "application.description"
+vendorName: "Item Consulting"
+vendorUrl: "https://item.no"
